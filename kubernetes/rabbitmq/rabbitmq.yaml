@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-dep
+  namespace: kapp
+  labels:
+    app: rabbitmq-app
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq-app
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-app
+    spec:
+      containers:
+      - image: rabbitmq
+        name: rabbitmq-pod
+        # resources:
+        #   limits:
+        #     memory: "256Mi"
+        #     cpu: "100m"
+        ports:
+        - containerPort: 5672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: kapp
+spec:
+  selector:
+    app: rabbitmq-app
+  ports:
+  - protocol: TCP
+    port: 5672
+    targetPort: 5672

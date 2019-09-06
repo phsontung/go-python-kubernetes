@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: kapp
+  labels:
+    app: k-ui
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: k-ui
+  template:
+    metadata:
+      labels:
+        app: k-ui
+    spec:
+      containers:
+      - name: k-frontend
+        image: host.docker.internal:5555/kfrontend:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: kapp
+spec:
+  selector:
+    app: k-ui
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 80
+    name: web
+  # type: LoadBalancer

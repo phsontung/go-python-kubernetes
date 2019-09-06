@@ -1,0 +1,19 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-ingress-config
+  namespace: kapp
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /ws
+        backend:
+          serviceName: notification
+          servicePort: web
+      - path: /
+        backend:
+          serviceName: frontend
+          servicePort: web
